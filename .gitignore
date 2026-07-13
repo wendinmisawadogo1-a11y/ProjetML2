@@ -1,0 +1,32 @@
+# --- Environnements Python ---
+.venv/
+venv/
+env/
+__pycache__/
+*.pyc
+*.pyo
+
+# --- Dataset (trop volumineux pour Git) ---
+data/
+dataset/
+
+# --- Modèles entraînés (voir README pour la stratégie de partage) ---
+*.h5
+*.keras
+ml/models/*.h5
+ml/models/*.keras
+
+# --- Fichiers sensibles / config locale ---
+.env
+*.log
+
+# --- OS / éditeurs ---
+.DS_Store
+.vscode/
+.idea/
+
+# --- Notebooks (checkpoints auto-générés) ---
+.ipynb_checkpoints/
+
+# --- Docker (build local) ---
+*.pid

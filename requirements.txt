@@ -1,0 +1,16 @@
+# --- Application web ---
+streamlit==1.38.0
+
+# --- Deep Learning ---
+tensorflow-cpu==2.17.0
+numpy==1.26.4
+Pillow==10.4.0
+
+# --- Scraping ---
+requests==2.32.3
+beautifulsoup4==4.12.3
+
+# --- Évaluation / analyse (Jalon 1) ---
+scikit-learn==1.5.1
+matplotlib==3.9.1
+seaborn==0.13.2
