@@ -59,4 +59,4 @@ car il dépasse une taille raisonnable pour un dépôt classique. Une fois le Ja
 soit un lien de téléchargement (Google Drive, Kaggle Dataset, etc.), soit basculez sur Git LFS si l'équipe
 préfère le versionner directement.
 
-**Lien de téléchargement du modèle :** _à compléter au Jalon 1_
+**Lien de téléchargement du modèle :** [modele_eco_sort.h5 — Google Drive](https://drive.google.com/file/d/1BNt_8IBORnOEIKzQY44jr9ZsJF5fFdXh/view?usp=drive_link)

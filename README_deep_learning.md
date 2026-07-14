@@ -120,9 +120,8 @@ else:
 ---
 
 ## Fichiers importants
-
 | Fichier | Description |
 |---|---|
-| `modele_eco_sort.h5` | Modèle CNN entraîné, à charger dans l'interface |
+| `modele_eco_sort.h5` | Modèle CNN entraîné — [Télécharger depuis Google Drive](https://drive.google.com/file/d/1BNt_8IBORnOEIKzQY44jr9ZsJF5fFdXh/view?usp=drive_link) |
 | `d3e_detection.py` | Fonction de détection D3E par mots-clés |
 | `deep_learning.py` | Script d'entraînement complet et reproductible |
