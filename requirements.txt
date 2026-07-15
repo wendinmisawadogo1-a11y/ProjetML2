@@ -12,5 +12,5 @@ beautifulsoup4==4.12.3
 
 # --- Évaluation / analyse (Jalon 1) ---
 scikit-learn==1.5.1
-matplotlib==3.9.1
+matplotlib==3.9.2
 seaborn==0.13.2
