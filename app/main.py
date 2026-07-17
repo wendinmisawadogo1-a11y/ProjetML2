@@ -1,7 +1,7 @@
 """
 main.py — Application EcoSort-Search (interface Streamlit).
 
-Flux : recherche produit -> vignettes Jumia -> selection -> analyse IA ->
+Flux : recherche produit -> vignettes Jumia -> selection -> analyse ->
 revelation plein ecran de la couleur de poubelle.
 
 Version actuelle : branchee sur les donnees factices (mock_data).
@@ -25,7 +25,7 @@ import streamlit as st
 
 from mapping import infos_poubelle, POUBELLES
 from scraping.jumia_scraper import search_jumia
-from mock_data import predict_bin   # on garde le mock pour l'IA en attendant le modèle
+from inference import predict_bin  
 
 
 SEUIL_CONFIANCE = 0.55
@@ -191,9 +191,9 @@ def analyser_produit(produit: dict):
 # ---------------------------------------------------------------------------
 st.markdown(
     '<div class="eco-brand"><span class="mark">Eco<span class="g">Sort</span></span>'
-    '<span class="leaf">♻️</span></div>'
+    '<span class="leaf"><svg width="42" height="42" viewBox="0 0 160 160" xmlns="http://www.w3.org/2000/svg" style="vertical-align:middle;"><circle cx="80" cy="80" r="70" fill="#EAF7EF" stroke="#1F8A54" stroke-width="6"/><rect x="54" y="62" width="52" height="60" rx="6" fill="#1F8A54"/><rect x="46" y="52" width="68" height="12" rx="5" fill="#14663D"/><rect x="74" y="40" width="12" height="14" rx="3" fill="#14663D"/><rect x="64" y="74" width="6" height="34" rx="3" fill="#EAF7EF"/><rect x="77" y="74" width="6" height="34" rx="3" fill="#EAF7EF"/><rect x="90" y="74" width="6" height="34" rx="3" fill="#EAF7EF"/><circle cx="114" cy="46" r="15" fill="#F5A623"/><path d="M108 46 a6 6 0 1 1 6 6 M114 52 l-3 -3 M114 52 l3 -3" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></span></div>'
     '<p class="eco-tag">Tapez le nom d\'un produit du quotidien. On le retrouve sur Jumia, '
-    'et l\'IA vous dit dans quelle poubelle le trier.</p>',
+    'et notre systeme vous dit dans quelle poubelle le trier.</p>',
     unsafe_allow_html=True,
 )
 
@@ -253,11 +253,11 @@ if st.session_state.prediction is not None:
     if pred["confiance"] < SEUIL_CONFIANCE:
         st.markdown(f"""
         <div class="result-panel" style="background:#EEF1F0; color:#2B3A33;">
-            <div class="result-emoji">🤔</div>
+            <div class="result-emoji">⚠️</div>
             <div class="result-bin">Resultat incertain</div>
-            <div class="result-mat">L'IA n'est pas assez sure pour ce produit</div>
+            <div class="result-mat">Notre systeme n'est pas assez sur pour ce produit</div>
             <div class="result-desc">
-                Confiance de {pred['confiance']:.0%}, sous le seuil de {SEUIL_CONFIANCE:.0%}.
+                Indice de fiabilite de {pred['confiance']:.0%}, sous le seuil de {SEUIL_CONFIANCE:.0%}.
                 Verifiez la matiere de l'emballage vous-meme, ou reessayez avec un produit
                 plus proche du votre.
             </div>
@@ -271,7 +271,7 @@ if st.session_state.prediction is not None:
             <div class="result-bin">{infos['nom']}</div>
             <div class="result-mat">Matiere detectee : {infos['matiere']}</div>
             <div class="result-desc">{infos['description']}</div>
-            <div class="result-pill">Confiance de l'IA : {pred['confiance']:.0%}</div>
+            <div class="result-pill">Indice de fiabilite : {pred['confiance']:.0%}</div>
         </div>
         """, unsafe_allow_html=True)
 
