@@ -11,10 +11,22 @@ ci-dessous par :
     from app.inference import predict_bin
 """
 
+import sys
+import os
+
+# Permet à Python de trouver les modules du projet (scraping/, app/)
+# quel que soit le dossier depuis lequel Streamlit est lancé.
+RACINE = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+if RACINE not in sys.path:
+    sys.path.insert(0, RACINE)
+
+
 import streamlit as st
 
 from mapping import infos_poubelle, POUBELLES
-from mock_data import search_jumia, predict_bin  # a remplacer plus tard
+from scraping.jumia_scraper import search_jumia
+from mock_data import predict_bin   # on garde le mock pour l'IA en attendant le modèle
+
 
 SEUIL_CONFIANCE = 0.55
 
@@ -63,6 +75,7 @@ html, body, [class*="css"] { font-family: 'Inter', sans-serif; color: var(--ink)
 /* ---- barre de recherche ---- */
 .stTextInput input {
     background: #FFFFFF; color: var(--ink);
+    caret-color: var(--leaf);       /* curseur de saisie bien visible (vert) */
     border: 1.5px solid var(--line); border-radius: 12px;
     padding: 14px 16px; font-size: 1.02rem;
 }
@@ -80,6 +93,7 @@ html, body, [class*="css"] { font-family: 'Inter', sans-serif; color: var(--ink)
     border-radius: 14px; overflow: hidden;
     transition: box-shadow .18s ease, transform .18s ease, border-color .18s ease;
     height: 100%;
+    display: flex; flex-direction: column;   /* colonne : image en haut, corps dessous */
 }
 .pcard:hover {
     box-shadow: 0 10px 26px rgba(20,60,40,.10);
@@ -92,7 +106,10 @@ html, body, [class*="css"] { font-family: 'Inter', sans-serif; color: var(--ink)
     background: #E7492E; color: #fff; font-weight: 700; font-size: .78rem;
     padding: 3px 8px; border-radius: 6px;
 }
-.pcard-body { padding: 12px 13px 6px 13px; }
+.pcard-body {
+    padding: 12px 13px 12px 13px;
+    display: flex; flex-direction: column; flex: 1 1 auto;  /* occupe la hauteur restante */
+}
 .pcard-name {
     font-size: .9rem; font-weight: 500; line-height: 1.32; color: var(--ink);
     display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical;
@@ -100,7 +117,9 @@ html, body, [class*="css"] { font-family: 'Inter', sans-serif; color: var(--ink)
 }
 .pcard-price {
     font-family: 'Fraunces', serif; font-weight: 600; font-size: 1.12rem;
-    color: var(--ink); margin-top: 6px;
+    color: var(--ink); margin-top: auto;         /* colle le prix en bas de la carte */
+    line-height: 1.25; white-space: nowrap;      /* prix sur une seule ligne */
+    overflow: hidden; text-overflow: ellipsis;   /* fourchette trop longue -> ... */
 }
 
 /* ---- eyebrow / titres de section ---- */
@@ -191,10 +210,23 @@ with col_btn:
 st.write("")
 
 
+def _prix_affichage(prix: str) -> str:
+    """
+    Raccourcit une fourchette de prix ('4 522 FCFA - 5 250 FCFA') en gardant
+    seulement le prix de depart suivi de '+', pour tenir sur une ligne.
+    Un prix simple est renvoye tel quel.
+    """
+    if prix and "-" in prix:
+        debut = prix.split("-")[0].strip()
+        return f"{debut}+"
+    return prix
+
+
 def carte_produit_html(produit: dict) -> str:
     badge = ""
     if produit.get("remise"):
         badge = f'<div class="pcard-badge">-{produit["remise"]}%</div>'
+    prix = _prix_affichage(produit["prix"])
     return f"""
     <div class="pcard">
         <div class="pcard-imgwrap">{badge}
@@ -202,7 +234,7 @@ def carte_produit_html(produit: dict) -> str:
         </div>
         <div class="pcard-body">
             <div class="pcard-name">{produit['nom']}</div>
-            <div class="pcard-price">{produit['prix']}</div>
+            <div class="pcard-price">{prix}</div>
         </div>
     </div>
     """
