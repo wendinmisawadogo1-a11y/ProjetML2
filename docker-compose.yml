@@ -1,0 +1,20 @@
+# =============================================================================
+# docker-compose.yml — EcoSort-Search
+# Alternative en une commande au duo build/run :
+#     docker-compose up -d --build
+# =============================================================================
+version: "3.8"
+
+services:
+  ecosort:
+    build:
+      context: .
+      args:
+        # Identifiant du fichier modele sur Google Drive (public).
+        # Remplacer par le vrai ID (voir README).
+        GDRIVE_FILE_ID: 1BNt_8IBORnOEIKzQY44jr9ZsJF5fFdXh
+    image: ecosort
+    container_name: ecosort
+    ports:
+      - "8501:8501"
+    restart: unless-stopped
