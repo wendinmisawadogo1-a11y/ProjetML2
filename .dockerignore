@@ -1,0 +1,33 @@
+# Environnements Python
+.venv/
+venv/
+env/
+__pycache__/
+*.pyc
+*.pyo
+
+# Dataset (jamais dans l'image)
+data/
+dataset/
+
+# Le modele est telecharge au build, pas copie depuis le contexte local
+
+# Git
+.git/
+.gitignore
+
+# Docs et fichiers de dev
+docs/
+*.ipynb
+.ipynb_checkpoints/
+.Rhistory
+
+# OS / editeurs
+.DS_Store
+.vscode/
+.idea/
+
+# Docker lui-meme
+Dockerfile
+.dockerignore
+docker-compose.yml
